@@ -91,7 +91,7 @@ class PHPCodeBeautifier {
     ];
 
     /**
-     * @var array   Dependency information to dynamically download when missing.
+     * @var array Dependency information to dynamically download when missing.
      */
     public $aDependencies = [
         'PHP_Beautifier'   => [
@@ -160,6 +160,11 @@ class PHPCodeBeautifier {
 
     }
 
+    /**
+     * @param  array $aPHPFiles
+     * @return array
+     * @since  1.0.0
+     */
     public function getInheritanceCombined( array $aPHPFiles ) {
         if ( empty( $this->aArguments[ 'combine' ][ 'inheritance' ] ) ) {
             return $aPHPFiles;
@@ -167,7 +172,12 @@ class PHPCodeBeautifier {
         $_oCombiner = new InheritanceCombiner( $aPHPFiles, $this->aArguments[ 'combine' ] );
         return $_oCombiner->get();
     }
-    
+
+    /**
+     * @param  array $aPHPFiles
+     * @return array
+     * @since  1.0.0
+     */
     public function getInlineCSSAndJSMinified( array $aPHPFiles ) {
         $this->output( 'Minifying Inline CSS and JavaScript...' );
         $this->output( 'CSS Here-doc Keys: ' . implode( ',', $this->aArguments[ 'css_heredoc_keys' ] ) );
@@ -195,6 +205,7 @@ class PHPCodeBeautifier {
 
     /**
      * @throws Exception
+     * @since  1.0.0
      */
     public function tryIncludingDependencies() {
         foreach( $this->aDependencies as $_sName => $_aLibrary  ) {
@@ -262,6 +273,12 @@ class PHPCodeBeautifier {
             return $this->getAbsolutePathFromRelative( $sDestinationDirPath, $this->getRelativePath( $sTempDirPath, $sFilePath ) );
         }
 
+    /**
+     * @param  array  $aPHPFiles
+     * @param  string $sHeaderComment
+     * @return array
+     * @since  1.0.0
+     */
     public function getPHPFilesBeautified( array $aPHPFiles, $sHeaderComment ) {
         $this->output( 'Beautifying PHP code.' );
         $_aNew = array();
@@ -275,9 +292,10 @@ class PHPCodeBeautifier {
     }
 
     /**
-     * @param  string    $sCode             PHP code without the beginning <? php.
-     * @param  string    $sHeaderComment
+     * @param  string $sCode          PHP code without the beginning <? php.
+     * @param  string $sHeaderComment
      * @return string
+     * @since  1.0.0
      */
     public function getCodeBeautified( $sCode, $sHeaderComment='' ) {
 
@@ -317,7 +335,7 @@ class PHPCodeBeautifier {
 
     /**
      * @return string
-     * @throws \ReflectionException
+     * @since  1.0.0
      */
     public function getHeaderComment( array $aPHPFiles ) {
 
@@ -339,6 +357,7 @@ class PHPCodeBeautifier {
     /**
      * @param  string    $sTempDirPath
      * @throws Exception
+     * @since  1.0.0
      */
     public function tryListingFiles( $sTempDirPath, array &$aPHPFiles, array &$aAdditionalFiles ) {
 
@@ -383,6 +402,13 @@ class PHPCodeBeautifier {
         }
 
     }
+        /**
+         * @param  string $sTempDirPath
+         * @param  array  $aSearchOptions
+         * @param  string $sStructureType
+         * @return array
+         * @since  1.0.0
+         */
         private function ___getFileList( $sTempDirPath, array $aSearchOptions, $sStructureType='CLASS' ) {
             $_oGenerator = new PHPClassMapGenerator(
                 $sTempDirPath,  // doesn't matter
@@ -403,6 +429,7 @@ class PHPCodeBeautifier {
     /**
      * @param  string $sTempDirPath
      * @throws Exception
+     * @since  1.0.0
      */
     public function tryCopyingFilesToTemporaryDirectory( $sTempDirPath ) {
         if ( ! $this->copy( $this->sSourceDirPath, $sTempDirPath, 0755, $this->aArguments[ 'search' ] ) ) {
@@ -424,6 +451,7 @@ class PHPCodeBeautifier {
 
     /**
      * @throws Exception
+     * @since  1.0.0
      */
     public function tryCheckingRequirements() {
         if ( ! is_dir( $this->sSourceDirPath ) ) {
@@ -433,11 +461,13 @@ class PHPCodeBeautifier {
 
     /**
      * Copy a file, or recursively copy a folder and its contents
+     *
      * @param  string   $sSourceDirPath    Source path
      * @param  string   $sDestDirPath      Destination path
      * @param  string   $iPermissions      New folder creation permissions
      * @param  array    $aOptions          Search options
      * @return boolean  Returns true on success, false on failure
+     * @since  1.0.0
      */
     public function copy( $sSourceDirPath, $sDestDirPath, $iPermissions = 0755, array $aOptions=[] ) {
 
@@ -477,6 +507,14 @@ class PHPCodeBeautifier {
         return true;
 
     }
+        /**
+         * @param  string  $sSource
+         * @param  string  $sDestination
+         * @param  integer $iPermissions
+         * @param  array   $aOptions
+         * @return boolean
+         * @since  1.0.0
+         */
         private function ___copyFile( $sSource, $sDestination, $iPermissions, array $aOptions=array() ) {
             if ( ! file_exists( $sSource ) ) {
                 return false;
@@ -491,6 +529,12 @@ class PHPCodeBeautifier {
             }
             return copy( $sSource, $sDestination );
         }
+            /**
+             * @param  string  $sSource
+             * @param  array   $aOptions
+             * @return boolean
+             * @since  1.0.0
+             */
             private function ___isInClassExclusionList( $sSource, $aOptions ) {
                 $_sFileBaseName = basename( $sSource );
                 if ( in_array( $_sFileBaseName, $aOptions[ 'exclude_file_names' ], true ) ) {
@@ -507,6 +551,13 @@ class PHPCodeBeautifier {
                 }
                 return false;
             }
+
+        /**
+         * @param  string  $sDirPath
+         * @param  array   $aOptions
+         * @return boolean
+         * @since  1.0.0
+         */
         private function ___isInExcludeList( $sDirPath, array $aOptions=[] ) {
 
             $sDirPath          = $this->getPathFormatted( $sDirPath );
@@ -540,7 +591,7 @@ class PHPCodeBeautifier {
     /**
      * Echoes the passed string.
      *
-     * @since 1.0.6\0
+     * @since 1.0.0
      */
     protected function output( $sText, $bCarriageReturn=true ) {
         if ( ! $this->aArguments[ 'output_buffer' ] ) {
