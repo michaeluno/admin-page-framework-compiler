@@ -115,7 +115,7 @@ class Compiler {
      * @param string $sDestinationDirPath
      * @param array  $aArguments
      */
-    public function __construct( $sSourceDirPath, $sDestinationDirPath, array $aArguments ) {
+    public function __construct( $sSourceDirPath, $sDestinationDirPath, array $aArguments=[] ) {
         $this->sSourceDirPath      = $this->getPathFormatted( $sSourceDirPath );
         $this->sDestinationDirPath = $this->getPathFormatted( $sDestinationDirPath );
         $this->aArguments          = array_replace_recursive( $this->aDefaults, $aArguments );
@@ -157,6 +157,7 @@ class Compiler {
 
         }
         $this->deleteDir( $_sTempDirPath );
+        $this->output( 'Compilation completed.' );
 
     }
 
