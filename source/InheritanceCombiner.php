@@ -128,10 +128,7 @@ class InheritanceCombiner {
             if ( $sClassName === $_sParentClass ) {
                 return $_aAncestors;
             }
-// print_r( [ 'this' => $sClassName, 'parent' => $_sParentClass ] );
-// echo PHP_EOL;
-// print_r( $aFiles[ $sClassName ] );
-// echo PHP_EOL;
+
             // Add the parent class to the returning array.
             if ( $bOnlyInTheSameDirectory ) {
                 $_sThisDirPath        = isset( $aFiles[ $sClassName ][ 'path' ] ) ? dirname( $aFiles[ $sClassName ][ 'path' ] ) : '';
