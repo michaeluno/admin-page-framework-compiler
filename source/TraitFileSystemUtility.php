@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPCodeBeautifier;
+namespace AdminPageFrameworkCompiler;
 
 use \Exception;
 use \ZipArchive;

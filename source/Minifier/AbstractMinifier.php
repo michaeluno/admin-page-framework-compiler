@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPCodeBeautifier\Minifier;
+namespace AdminPageFrameworkCompiler\Minifier;
 
 abstract class AbstractMinifier {
 

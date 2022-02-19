@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPCodeBeautifier\Minifier;
+namespace AdminPageFrameworkCompiler\Minifier;
 
 include_once( __DIR__ . '/AbstractMinifier.php' );
 

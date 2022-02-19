@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPCodeBeautifier;
+namespace AdminPageFrameworkCompiler;
 
 use \PHPClassMapGenerator\PHPClassMapGenerator;
 use \PHPClassMapGenerator\Header\HeaderGenerator;

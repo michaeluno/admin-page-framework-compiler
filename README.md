@@ -31,7 +31,7 @@ The options array takes the following arguments.
 
 ## Example
 ```php
-$oBeautifier = new \PHPCodeBeautifier\PHPCodeBeautifier(
+$oBeautifier = new \AdminPageFrameworkCompiler\PHPCodeBeautifier(
     $sSourceDirPath,
     $sDestinationDirPath,
     [
