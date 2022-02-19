@@ -6,6 +6,7 @@ use \PHPClassMapGenerator\PHPClassMapGenerator;
 use \PHPClassMapGenerator\Header\HeaderGenerator;
 use Exception;
 
+include_once( __DIR__ . '/InterfaceCompiler.php' );
 include_once( __DIR__ . '/DependencyLoader.php' );
 include_once( __DIR__ . '/Minifier/InlineCSSMinifier.php' );
 include_once( __DIR__ . '/Minifier/InlineJSMinifier.php' );
@@ -21,7 +22,7 @@ include_once( __DIR__ . '/TraitFileSystemUtility.php' );
  *
  * @version 1.0.0
  */
-class Compiler {
+class Compiler implements InterfaceCompiler {
 
     use TraitFileSystemUtility;
 
@@ -596,7 +597,7 @@ class Compiler {
      *
      * @since 1.0.0
      */
-    protected function output( $sText, $bCarriageReturn=true ) {
+    public function output( $sText, $bCarriageReturn=true ) {
         if ( ! $this->aArguments[ 'output_buffer' ] ) {
             return;
         }
