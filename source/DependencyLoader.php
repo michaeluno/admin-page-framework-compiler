@@ -89,9 +89,9 @@ class DependencyLoader {
 
         }
             /**
-             * @param $sName
-             * @param array $aLibrary
-             * @since   1.3.0
+             * @param  string $sName
+             * @param  array $aLibrary
+             * @since  1.0.0
              * @return string
              */
             private function ___getAutoLoaderPath( $sName, array $aLibrary ) {
@@ -131,7 +131,7 @@ class DependencyLoader {
             }
 
         /**
-         * @since   1.3.0
+         * @since   1.0.0
          * @return  true
          * @throws  Exception
          */

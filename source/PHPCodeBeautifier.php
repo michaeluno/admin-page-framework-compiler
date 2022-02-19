@@ -209,7 +209,7 @@ class PHPCodeBeautifier {
 
     /**
      * Writes contents to files.
-     * @since 1.0.0
+     * @since  1.0.0
      * @throws Exception
      */
     public function tryCreatingFiles( array $aFiles, $sTempDirPath, $sDestinationDirPath ) {
@@ -540,7 +540,7 @@ class PHPCodeBeautifier {
     /**
      * Echoes the passed string.
      *
-     * @since 1.0.6
+     * @since 1.0.6\0
      */
     protected function output( $sText, $bCarriageReturn=true ) {
         if ( ! $this->aArguments[ 'output_buffer' ] ) {
