@@ -1,0 +1,98 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "2f5bdd212b2e8641d62380d89648532e",
+    "packages": [
+        {
+            "name": "asika/minify",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/asika32764/minify.git",
+                "reference": "b19ee05208fcd3628d5ba58040a71e36166e20ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/asika32764/minify/zipball/b19ee05208fcd3628d5ba58040a71e36166e20ae",
+                "reference": "b19ee05208fcd3628d5ba58040a71e36166e20ae",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Asika\\Minifier\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Asika",
+                    "email": "asika32764@gmail.com"
+                }
+            ],
+            "description": "Simple CSS & JS minify package",
+            "support": {
+                "issues": "https://github.com/asika32764/minify/issues",
+                "source": "https://github.com/asika32764/minify/tree/master"
+            },
+            "time": "2018-12-18T08:32:47+00:00"
+        },
+        {
+            "name": "michaeluno/php-classmap-generator",
+            "version": "1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michaeluno/php-classmap-generator.git",
+                "reference": "7c945304ea80cbca8cd0d67e97d59c4735e09cac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michaeluno/php-classmap-generator/zipball/7c945304ea80cbca8cd0d67e97d59c4735e09cac",
+                "reference": "7c945304ea80cbca8cd0d67e97d59c4735e09cac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.20"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPClassMapGenerator\\": "source/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Uno",
+                    "email": "michael2@michaeluno.jp"
+                }
+            ],
+            "description": "A PHP class that generates class maps for autoload.",
+            "support": {
+                "issues": "https://github.com/michaeluno/php-classmap-generator/issues",
+                "source": "https://github.com/michaeluno/php-classmap-generator/tree/1.2.2"
+            },
+            "time": "2022-02-17T11:35:59+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.6.20"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
+}
