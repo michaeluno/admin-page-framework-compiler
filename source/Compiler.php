@@ -61,7 +61,7 @@ class Compiler {
 
         // Non-PHP files to include. The sub-arguments are the same as the `search` argument.
         'include'   => [
-            'allowed_extensions'        => [],  // e.g. array( 'js', 'css' )
+            'allowed_extensions'        => [],  // e.g. array( 'js', 'css' ) leave empty to disable the additinal files
             'exclude_dir_paths'         => [],
             'exclude_dir_names'         => [],
             'exclude_dir_names_regex'   => [],
@@ -395,8 +395,10 @@ class Compiler {
          *      // continues...
          * ]
          */
-        $aAdditionalFiles = $this->___getFileList( $sTempDirPath, $this->aArguments[ 'include' ], 'PATH' );
-        $this->output( sprintf( 'Found %1$s additional file(s).', count( $aAdditionalFiles ) ) );
+        if ( ! empty( $this->aArguments[ 'include' ][ 'allowed_extensions' ] ) ) {
+            $aAdditionalFiles = $this->___getFileList( $sTempDirPath, $this->aArguments[ 'include' ], 'PATH' );
+            $this->output( sprintf( 'Found %1$s additional file(s).', count( $aAdditionalFiles ) ) );
+        }
 
         if ( empty( $aPHPFiles ) && empty( $aAdditionalFiles ) ) {
             throw new Exception( 'Could not find files.' );
