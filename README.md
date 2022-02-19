@@ -69,3 +69,7 @@ $oCompiler = new \AdminPageFrameworkCompiler\Compiler(
 );
 $oCompiler->run();
 ```
+
+### Known Limitations
+
+- Traits are not supported as they cannot be parsed properly and invalid PHP code gets produced. 
