@@ -1,5 +1,9 @@
+# ignore dynamically loaded dependencies
+source/library
+
 # ignore node dependency directories
 vendor/
+scratch/
 
 # ignore node dependency directories
 node_modules/
@@ -53,13 +57,7 @@ _bak/
 *.rar
 *.tar
 *.zip
- 
-# Logs and databases #
-######################
-*.log
-*.sql
-*.sqlite
- 
+
 # OS generated files #
 ######################
 .DS_Store
