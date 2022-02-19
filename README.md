@@ -1,6 +1,12 @@
 # Admin Page Framework Compiler
 A compiler script for Admin Page Framework, a WordPress development framework.
 
+## Basic Usage
+```php
+$oCompiler = new \AdminPageFrameworkCompiler\Compiler( $sSourceDirPath, $sDestinationDirPath );
+$oCompiler->run();
+```
+
 ## Options
 The options array takes the following arguments.
 - 'output_buffer'       : (boolean) whether output buffer should be printed.
@@ -31,7 +37,7 @@ The options array takes the following arguments.
 
 ## Example
 ```php
-$oBeautifier = new \AdminPageFrameworkCompiler\PHPCodeBeautifier(
+$oCompiler = new \AdminPageFrameworkCompiler\Compiler(
     $sSourceDirPath,
     $sDestinationDirPath,
     [
@@ -61,5 +67,5 @@ $oBeautifier = new \AdminPageFrameworkCompiler\PHPCodeBeautifier(
         ],
     ]
 );
-$oBeautifier->run();
+$oCompiler->run();
 ```

@@ -16,12 +16,12 @@ include_once( __DIR__ . '/TraitFileSystemUtility.php' );
  * Diminishes the size of specified PHP files.
  *
  * ### Usage
- * $oBeautifier = new PHPCodeBeautifier\PHPCodeBeautifier( $sSourceDirPath, $sDestinationDirPath );
- * $oBeautifier->run();
+ * $oCompiler = new \AdminPageFrameworkCompiler\Compiler( $sSourceDirPath, $sDestinationDirPath );
+ * $oCompiler->run();
  *
  * @version 1.0.0
  */
-class PHPCodeBeautifier {
+class Compiler {
 
     use TraitFileSystemUtility;
 
