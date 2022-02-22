@@ -1,26 +1,29 @@
 <?php
-
+/**
+ * Admin Page Framework Compiler
+ *
+ * Compiles Admin Page Framework files including assets.
+ *
+ * @copyright 2022- (c) Michael Uno <https://github.com/michaeluno/admin-page-framework-compiler>
+ * @license   MIT
+ * @version   1.0.0
+ */
 namespace AdminPageFrameworkCompiler;
 
 use \PHPClassMapGenerator\PHPClassMapGenerator;
 use \PHPClassMapGenerator\Header\HeaderGenerator;
 use Exception;
 
-include_once( __DIR__ . '/InterfaceCompiler.php' );
-include_once( __DIR__ . '/DependencyLoader.php' );
-include_once( __DIR__ . '/Minifier/InlineCSSMinifier.php' );
-include_once( __DIR__ . '/Minifier/InlineJSMinifier.php' );
-include_once( __DIR__ . '/InheritanceCombiner.php' );
-include_once( __DIR__ . '/TraitFileSystemUtility.php' );
+include_once( __DIR__ . '/autoload.php' );
 
 /**
- * Diminishes the size of specified PHP files.
+ * Compiles Admin Page Framework files.
  *
  * ### Usage
+ * ```
  * $oCompiler = new \AdminPageFrameworkCompiler\Compiler( $sSourceDirPath, $sDestinationDirPath );
  * $oCompiler->run();
- *
- * @version 1.0.0
+ * ```
  */
 class Compiler implements InterfaceCompiler {
 

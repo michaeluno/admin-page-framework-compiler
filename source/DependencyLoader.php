@@ -5,9 +5,6 @@ namespace AdminPageFrameworkCompiler;
 use \Exception;
 use PHPClassMapGenerator\PHPClassMapGenerator;
 
-include_once( __DIR__ . '/TraitFileSystemUtility.php' );
-include_once( __DIR__ . '/TraitDownload.php' );
-
 class DependencyLoader {
 
     use TraitFileSystemUtility;

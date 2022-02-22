@@ -2,8 +2,6 @@
 
 namespace AdminPageFrameworkCompiler\Minifier;
 
-include_once( __DIR__ . '/AbstractMinifier.php' );
-
 use MatthiasMullie\Minify;
 
 class InlineJSMinifier extends AbstractMinifier {
