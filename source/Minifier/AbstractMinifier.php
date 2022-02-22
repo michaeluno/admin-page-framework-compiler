@@ -49,12 +49,15 @@ abstract class AbstractMinifier {
      * @return   string
      */
     private function ___replyToGetMinified( $aMatch ) {
+var_dump( $aMatch );
         if ( ! isset( $aMatch[ 1 ], $aMatch[ 2 ], $aMatch[ 3 ] ) ) {
             return $aMatch[ 0 ];
         }
-        $_sCSSRules = $aMatch[ 2 ];
+        $_sCode = $aMatch[ 2 ];
         // this library produces some unwanted warnings so disable it with @.
-        return '"' . $this->getMinified( $_sCSSRules ) . '"; ';
+        return $aMatch[ 1 ]
+            . $this->getMinified( $_sCode )
+            . $aMatch[ 3 ];
     }
 
     /**
