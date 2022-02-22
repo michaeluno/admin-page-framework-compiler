@@ -4,6 +4,7 @@
   "minimum-stability": "stable",
   "license": "MIT",
   "type": "library",
+  "keywords": [ "tool", "framework", "compiler", "build", "Admin Page Framework", "WordPress" ],
   "authors": [
     {
       "name": "Michael Uno",
