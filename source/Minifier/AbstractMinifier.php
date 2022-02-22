@@ -55,7 +55,7 @@ abstract class AbstractMinifier {
     }
 
     /**
-     * @param  string $sResourceCode    CSS rules.
+     * @param  string $sResourceCode The resource code to minify.
      * @return string
      * @since  1.0.0
      */
