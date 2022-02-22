@@ -148,8 +148,6 @@ class Compiler implements InterfaceCompiler {
             $_aPHPFiles = $_aAdditionalFiles = [];
             $this->tryListingFiles( $_sTempDirPath, $_aPHPFiles, $_aAdditionalFiles );
 
-            $_aPHPFiles = $this->getInlineCSSAndJSMinified( $_aPHPFiles );
-            
             $_aPHPFiles = $this->getInheritanceCombined( $_aPHPFiles );
 
             $_sHeaderComment = $this->getHeaderComment( $_aPHPFiles );
@@ -157,6 +155,8 @@ class Compiler implements InterfaceCompiler {
             $this->tryIncludingDependencies();
 
             $_aPHPFiles = $this->getPHPFilesBeautified( $_aPHPFiles, $_sHeaderComment );
+
+            $_aPHPFiles = $this->getInlineCSSAndJSMinified( $_aPHPFiles );
 
             $this->tryCreatingFiles( array_merge( $_aPHPFiles, $_aAdditionalFiles ), $_sTempDirPath, $this->sDestinationDirPath );
 
