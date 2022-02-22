@@ -51,7 +51,7 @@ abstract class AbstractMinifier {
         }
         $_sCSSRules = $aMatch[ 2 ];
         // this library produces some unwanted warnings so disable it with @.
-        return '"' . @$this->getMinified( $_sCSSRules ) . '"; ';
+        return '"' . $this->getMinified( $_sCSSRules ) . '"; ';
     }
 
     /**

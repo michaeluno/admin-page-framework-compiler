@@ -14,6 +14,7 @@ use \PHPClassMapGenerator\PHPClassMapGenerator;
 use \PHPClassMapGenerator\Header\HeaderGenerator;
 use Exception;
 
+use \AdminPageFrameworkCompiler\FixerHelper\VariableCodeProcessor;
 include_once( __DIR__ . '/autoload.php' );
 
 /**
@@ -28,6 +29,7 @@ include_once( __DIR__ . '/autoload.php' );
 class Compiler implements InterfaceCompiler {
 
     use TraitFileSystemUtility;
+    use TraitLog;
 
     public $sSourceDirPath = '';
     public $sDestinationDirPath = '';
@@ -38,9 +40,13 @@ class Compiler implements InterfaceCompiler {
         'output_buffer'     => true,
         'carriage_return'   => PHP_EOL,
 
-        'header_class_name' => '',
-        'header_class_path' => '',
-        'header_type'       => 'DOCBLOCK',
+        'comment_header'    => [
+            'text'  => '',
+            'path'  => '',
+            'class' => '',
+            // 'type'  => 'DOCBLOCK',
+            // 'wrap'  => true,
+        ],
 
         // 'character_encode'  => 'UTF-8',  // unused at the moment
 
@@ -98,18 +104,19 @@ class Compiler implements InterfaceCompiler {
      * @var array Dependency information to dynamically download when missing.
      */
     public $aDependencies = [
-        'PHP_Beautifier'   => [
-            'name'             => 'PHP_Beautifier',
-            'type'             => 'zip', // @todo support phar
-            'url'              => 'https://github.com/michaeluno/PHP_Beautifier/archive/0.1.17.1.zip',
-            'requirements' => [
-                'functions' => [
-                    'token_get_all',
-                ],
-                'classes'   => [],
-            ],
-            'autoloader'   => 'Beautifier.php',    // the bootstrap file base name of the library that includes its components
-        ],
+        // @deprecated  As using PHP CS Fixer
+        // 'PHP_Beautifier'   => [
+        //     'name'             => 'PHP_Beautifier',
+        //     'type'             => 'zip', // @todo support phar
+        //     'url'              => 'https://github.com/michaeluno/PHP_Beautifier/archive/0.1.17.1.zip',
+        //     'requirements' => [
+        //         'functions' => [
+        //             'token_get_all',
+        //         ],
+        //         'classes'   => [],
+        //     ],
+        //     'autoloader'   => 'Beautifier.php',    // the bootstrap file base name of the library that includes its components
+        // ],
     ];
 
     /**
@@ -285,6 +292,9 @@ class Compiler implements InterfaceCompiler {
      * @since  1.0.0
      */
     public function getPHPFilesBeautified( array $aPHPFiles, $sHeaderComment ) {
+        $sHeaderComment = false !== strpos( $sHeaderComment, '/*' )
+            ? HeaderGenerator::getMultiLineCommentUnwrapped( $sHeaderComment )
+            : $sHeaderComment;
         $this->output( 'Beautifying PHP code.' );
         $_aNew = array();
         foreach( $aPHPFiles as $_sFileBasename => $_aFile  ) {
@@ -305,32 +315,21 @@ class Compiler implements InterfaceCompiler {
     public function getCodeBeautified( $sCode, $sHeaderComment='' ) {
 
         try {
-
-            $_oBeautifier = new \PHP_Beautifier();
-            $_oBeautifier->setIndentChar(' ' );
-            // $_oBeautifier->setIndentNumber( 4 );
-            $_oBeautifier->setNewLine( "\n" );
-
-            $sCode = '<?php ' . trim( $sCode ); // PHP_Beautifier needs the beginning < ?php notation. The passed code is already formatted and the notation is removed.
-            $_oBeautifier->setInputString( $sCode );
-            $_oBeautifier->process();
-
-            $sCode = $_oBeautifier->get();
-            $sCode = trim( $sCode ); // remove a trailing line-feed.
-
+            $_oFormatter = new VariableCodeProcessor();
+            $_oFormatter->addRules([
+                'header_comment' => [
+                    'header'        => $sHeaderComment,
+                    'comment_type'  => 'comment', // 'PHPDoc',
+                    'location'      => 'after_open',
+                    'separate'      => 'bottom'
+                ],
+            ]);
+            $sCode = '<?php ' . trim( $sCode );
+            $sCode = $_oFormatter->get( $sCode );
         }
         catch ( Exception $_oException ) {
             $this->output( $_oException->getCode() . ': ' . $_oException->getMessage() );
             return '';
-        }
-
-        // Add the file comment header
-        if ( strlen( $sHeaderComment ) ) {
-            $sCode = preg_replace(
-                '/^<\?php\s+?/',        // search
-                '<?php ' . PHP_EOL . $sHeaderComment . PHP_EOL, // replace
-                $sCode  // subject
-            );
         }
 
         // Somehow the ending enclosing braces gets 4-spaced indents. So fix them.
@@ -346,7 +345,7 @@ class Compiler implements InterfaceCompiler {
 
         $_sHeaderComment = '';
         try {
-            $_oHeader        = new HeaderGenerator( $aPHPFiles, $this->aArguments );
+            $_oHeader        = new HeaderGenerator( $aPHPFiles, $this->aArguments[ 'comment_header' ] );
             $_sHeaderComment = $_oHeader->get();
             if ( $_sHeaderComment ) {
                 $this->output( 'File Header:' );
@@ -606,6 +605,19 @@ class Compiler implements InterfaceCompiler {
         }
         echo $sText
              . ( $bCarriageReturn ? $this->aArguments[ 'carriage_return' ] : '' );
+    }
+
+    /**
+     * @param $sMessage
+     */
+    public function log( $sMessage ) {
+        $this->log( $sMessage, __DIR__ . dirname( $this->sDestinationDirPath ) . '/apf-compile.log' );
+    }
+    /**
+     * @param $sMessage
+     */
+    public function logError( $sMessage ) {
+        $this->log( $sMessage, __DIR__ . dirname( $this->sDestinationDirPath ) . '/apf-compile-error.log' );
     }
 
 }
