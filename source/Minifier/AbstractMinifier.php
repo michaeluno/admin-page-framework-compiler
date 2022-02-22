@@ -30,8 +30,8 @@ abstract class AbstractMinifier {
         foreach( $this->aHereDocKeys as $_sHereDocKey ) {
             $sPHPCode = preg_replace_callback(
                 "/\s?+\K(<<<{$_sHereDocKey}[\r\n])(.+?)([\r\n]{$_sHereDocKey};(\s+)?[\r\n])/ms",   // needle
-                array( $this, 'replyToGetMinified' ),                               // callback
-                $sPHPCode,                                                         // haystack
+                array( $this, '___replyToGetMinified' ),  // callback
+                $sPHPCode,                                // haystack
                 -1  // limit -1 for no limit
             );
         }
@@ -45,7 +45,7 @@ abstract class AbstractMinifier {
      * @callback preg_replace_callback()
      * @return   string
      */
-    public function replyToGetMinified( $aMatch ) {
+    private function ___replyToGetMinified( $aMatch ) {
         if ( ! isset( $aMatch[ 1 ], $aMatch[ 2 ], $aMatch[ 3 ] ) ) {
             return $aMatch[ 0 ];
         }
