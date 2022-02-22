@@ -1,6 +1,14 @@
 # Admin Page Framework Compiler
 A compiler script for Admin Page Framework, a WordPress development framework.
 
+## Installation
+### Composer
+To install the library using Composer, run 
+
+```bash
+composer require michaeluno/admin-page-framework-compiler
+```
+
 ## Basic Usage
 ```php
 $oCompiler = new \AdminPageFrameworkCompiler\Compiler( $sSourceDirPath, $sDestinationDirPath );
