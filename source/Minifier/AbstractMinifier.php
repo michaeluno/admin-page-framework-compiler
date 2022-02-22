@@ -28,6 +28,9 @@ abstract class AbstractMinifier {
      */
     public function get( $sPHPCode ) {
         foreach( $this->aHereDocKeys as $_sHereDocKey ) {
+            if ( ! strlen( $_sHereDocKey ) ) {
+                continue;
+            }
             $sPHPCode = preg_replace_callback(
                 "/\s?+\K(<<<{$_sHereDocKey}[\r\n])(.+?)([\r\n]{$_sHereDocKey};(\s+)?[\r\n])/ms",   // needle
                 array( $this, '___replyToGetMinified' ),  // callback
