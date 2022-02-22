@@ -334,7 +334,7 @@ class Compiler implements InterfaceCompiler {
         }
 
         // Somehow the ending enclosing braces gets 4-spaced indents. So fix them.
-        return preg_replace( '/[\r\n]\K\s{4}\}$/', '}', $sCode );
+        return preg_replace( '/[\r\n]\K\s{4}}$/', '}', $sCode );
 
     }
 
