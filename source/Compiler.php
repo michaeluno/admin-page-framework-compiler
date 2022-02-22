@@ -51,8 +51,8 @@ class Compiler implements InterfaceCompiler {
         // 'character_encode'  => 'UTF-8',  // unused at the moment
 
         'exclude_classes'   => [],
-        'css_heredoc_keys'  => [ 'CSSRULES' ],
-        'js_heredoc_keys'   => [ 'JAVASCRIPTS' ],
+        'css_heredoc_keys'  => [],
+        'js_heredoc_keys'   => [],
 
         // Search options
         'search'    => [
