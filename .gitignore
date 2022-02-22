@@ -4,6 +4,7 @@ source/library
 # ignore node dependency directories
 vendor/
 scratch/
+test/output
 
 # ignore node dependency directories
 node_modules/
