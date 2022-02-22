@@ -2,7 +2,6 @@
 
 namespace AdminPageFrameworkCompiler;
 
-
 /**
  * Collections of utility methods which possibly can be used apart from the project.
  */
