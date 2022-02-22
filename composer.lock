@@ -594,16 +594,16 @@
         },
         {
             "name": "michaeluno/php-classmap-generator",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/michaeluno/php-classmap-generator.git",
-                "reference": "b8f23481d18b0fd0947d4e8bb0b9d5d8d2106cc2"
+                "reference": "dcbfa10dc9e3fb1bcf68f7a01503d1f232103c10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michaeluno/php-classmap-generator/zipball/b8f23481d18b0fd0947d4e8bb0b9d5d8d2106cc2",
-                "reference": "b8f23481d18b0fd0947d4e8bb0b9d5d8d2106cc2",
+                "url": "https://api.github.com/repos/michaeluno/php-classmap-generator/zipball/dcbfa10dc9e3fb1bcf68f7a01503d1f232103c10",
+                "reference": "dcbfa10dc9e3fb1bcf68f7a01503d1f232103c10",
                 "shasum": ""
             },
             "require": {
@@ -635,9 +635,9 @@
             ],
             "support": {
                 "issues": "https://github.com/michaeluno/php-classmap-generator/issues",
-                "source": "https://github.com/michaeluno/php-classmap-generator/tree/1.3.0"
+                "source": "https://github.com/michaeluno/php-classmap-generator/tree/1.3.1"
             },
-            "time": "2022-02-22T11:25:32+00:00"
+            "time": "2022-02-22T16:20:25+00:00"
         },
         {
             "name": "php-cs-fixer/diff",
