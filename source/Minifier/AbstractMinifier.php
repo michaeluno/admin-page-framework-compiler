@@ -60,9 +60,7 @@ abstract class AbstractMinifier {
      * @since  1.0.0
      */
     public function getMinified( $sResourceCode ) {
-        $_oMinifier      = \Asika\Minifier\MinifierFactory::create( strtolower( $this->sResourceType ) );
-        $_oMinifier->addContent( $sResourceCode );
-        return $_oMinifier->minify();
+        return $sResourceCode;
     }
 
 }
