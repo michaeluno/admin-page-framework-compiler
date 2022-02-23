@@ -49,7 +49,6 @@ abstract class AbstractMinifier {
      * @return   string
      */
     private function ___replyToGetMinified( $aMatch ) {
-var_dump( $aMatch );
         if ( ! isset( $aMatch[ 1 ], $aMatch[ 2 ], $aMatch[ 3 ] ) ) {
             return $aMatch[ 0 ];
         }
