@@ -210,7 +210,7 @@ class Compiler implements InterfaceCompiler {
         }
         if ( $_iProcessed ) {
             $this->output( '' );    // echo carriage return
-            $this->output( sprintf( '%1$s files were modified.', $_iProcessed ) );
+            $this->output( sprintf( 'Here-doc resources of %1$s files code were minified.', $_iProcessed ) );
         }
         return $aPHPFiles;
     }
