@@ -5,11 +5,6 @@ namespace AdminPageFrameworkCompiler\Minifier;
 abstract class AbstractMinifier {
 
     /**
-     * @var string
-     */
-    public $sResourceType = ''; // `js` or `css`
-
-    /**
      * @var array
      */
     public $aHereDocKeys = [];

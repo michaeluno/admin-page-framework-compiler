@@ -6,8 +6,6 @@ use MatthiasMullie\Minify;
 
 class InlineCSSMinifier extends AbstractMinifier {
 
-    public $sResourceType = 'css';
-
     /**
      * @param  string $sResourceCode CSS rules.
      * @return string
