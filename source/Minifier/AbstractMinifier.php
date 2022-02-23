@@ -53,10 +53,7 @@ abstract class AbstractMinifier {
             return $aMatch[ 0 ];
         }
         $_sCode = $aMatch[ 2 ];
-        // this library produces some unwanted warnings so disable it with @.
-        return $aMatch[ 1 ]
-            . $this->getMinified( $_sCode )
-            . $aMatch[ 3 ];
+        return $aMatch[ 1 ] . $this->getMinified( $_sCode ) . $aMatch[ 3 ];
     }
 
     /**
