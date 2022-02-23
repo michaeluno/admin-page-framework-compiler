@@ -31,11 +31,11 @@ class Compiler implements InterfaceCompiler {
     use TraitFileSystemUtility;
     use TraitLog;
 
-    public $sSourceDirPath = '';
+    public $sSourceDirPath      = '';
     public $sDestinationDirPath = '';
-    public $sTempDirPrefix = 'PHPCodeBeautifier_';      // for Windows, this prefix gets shortened to 3 characters like 'PHP'.
-    public $aArguments = [];
-    public $aDefaults  = [
+    public $sTempDirPrefix      = 'APFCompiler_';      // for Windows, this prefix gets shortened to 3 characters like 'APF'.
+    public $aArguments          = [];
+    public $aDefaults           = [
 
         'output_buffer'     => true,
         'carriage_return'   => PHP_EOL,
@@ -218,6 +218,8 @@ class Compiler implements InterfaceCompiler {
     /**
      * @throws Exception
      * @since  1.0.0
+     * @deprecated No longer used. This was used to download and install PHP Beautifier.
+     * But the function itself is not limited to the particular package so in the future it might be used again.
      */
     public function tryIncludingDependencies() {
         foreach( $this->aDependencies as $_sName => $_aLibrary  ) {
