@@ -10,11 +10,11 @@
  */
 namespace AdminPageFrameworkCompiler;
 
-use \PHPClassMapGenerator\PHPClassMapGenerator;
-use \PHPClassMapGenerator\Header\HeaderGenerator;
+use PHPClassMapGenerator\PHPClassMapGenerator;
+use PHPClassMapGenerator\Header\HeaderGenerator;
 use Exception;
 
-use \AdminPageFrameworkCompiler\FixerHelper\VariableCodeProcessor;
+use AdminPageFrameworkCompiler\FixerHelper\VariableCodeProcessor;
 include_once( __DIR__ . '/autoload.php' );
 
 /**
@@ -167,7 +167,9 @@ class Compiler implements InterfaceCompiler {
 
             $_aPHPFiles = $this->getInlineCSSAndJSMinified( $_aPHPFiles );
 
-            $this->tryCreatingFiles( array_merge( $_aPHPFiles, $_aAdditionalFiles ), $_sTempDirPath, $this->sDestinationDirPath );
+            $_oFileGenerator = new Delegation\FileGenerator( $this, $_sTempDirPath, $_aPHPFiles, $_aAdditionalFiles );
+            $_oFileGenerator->tryDoing();
+
 
         } catch ( Exception $oException ) {
 
@@ -231,7 +233,7 @@ class Compiler implements InterfaceCompiler {
      * But the function itself is not limited to the particular package so in the future it might be used again.
      */
     public function tryIncludingDependencies() {
-        foreach( $this->aDependencies as $_sName => $_aLibrary  ) {
+        foreach( $this->aDependencies as $_aLibrary  ) {
             $_oDependencyLoader = new DependencyLoader( $_aLibrary );
             $_bLoaded  = $_oDependencyLoader->load();
             $_sMessage = $_bLoaded
@@ -240,61 +242,6 @@ class Compiler implements InterfaceCompiler {
             $this->output( $_sMessage );
         }
     }
-
-    /**
-     * Writes contents to files.
-     * @since  1.0.0
-     * @throws Exception
-     */
-    public function tryCreatingFiles( array $aFiles, $sTempDirPath, $sDestinationDirPath ) {
-
-        // Remove old files.
-        $this->output( 'Deleting: ' . $sDestinationDirPath );
-        $this->deleteDir( $sDestinationDirPath );
-        if ( ! is_dir( $sDestinationDirPath ) && ! mkdir( $sDestinationDirPath, 0755 ) ) {
-            throw new Exception( 'Failed to create the destination directory.' );
-        }
-
-        // Create files.
-        $_bProcessed = false;
-        foreach( $aFiles as $_asFile ) {
-
-            // For PHP files, the element is formatted as an array.
-            // If it is not formatted, just copy it.
-            if ( is_scalar( $_asFile ) ) {
-                if ( ! file_exists( $_asFile ) ) {
-                    $this->output( 'The file does not exist: ' . $_asFile );
-                    continue;
-                }
-                $this->output( '.', false );
-                // $this->output( 'Copying: ' . basename( $_asFile ) . ' To: ' . $this->___getDestinationFilePathFromTempPath( $sDestinationDirPath, $sTempDirPath, $_asFile ) );
-                $this->copy(
-                    $_asFile,
-                    $this->___getDestinationFilePathFromTempPath( $sDestinationDirPath, $sTempDirPath, $_asFile ),
-                    0755,
-                    $this->aArguments[ 'include' ]
-                );
-                $_bProcessed = true;
-                continue;
-            }
-            // Otherwise, it is a PHP file
-            $this->output( '.', false );
-            $this->write( $this->___getDestinationFilePathFromTempPath( $sDestinationDirPath, $sTempDirPath, $_asFile[ 'path' ] ), $_asFile[ 'code' ] );
-            $_bProcessed = true;
-
-        }
-        if ( $_bProcessed ) {
-            $this->output( '' );    // add a carriage return after dots.
-        }
-
-    }
-        /**
-         * @return string
-         * @since  1.0.0
-         */
-        private function ___getDestinationFilePathFromTempPath( $sDestinationDirPath, $sTempDirPath, $sFilePath ) {
-            return $this->getAbsolutePathFromRelative( $sDestinationDirPath, $this->getRelativePath( $sTempDirPath, $sFilePath ) );
-        }
 
     /**
      * @param  array  $aPHPFiles
@@ -371,8 +318,6 @@ class Compiler implements InterfaceCompiler {
         return trim( $_sHeaderComment );
 
     }
-
-
 
     /**
      * @param  string $sTempDirPath
