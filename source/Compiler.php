@@ -153,19 +153,12 @@ class Compiler implements InterfaceCompiler {
             $_sTempDirPath = $this->tryToGetTemporaryDirectoryCreated();
             $this->tryCopyingFilesToTemporaryDirectory( $_sTempDirPath );
 
-            $_aPHPFiles = $_aAdditionalFiles = [];
-            $_oFileList = new Delegation\FileList( $this, $_sTempDirPath, $_aPHPFiles, $_aAdditionalFiles );
+            $_aPHPFiles      = $_aAdditionalFiles = [];
+            $_oFileList      = new Delegation\FileList( $this, $_sTempDirPath, $_aPHPFiles, $_aAdditionalFiles );
             $_oFileList->tryDoing();
 
-            $_aPHPFiles = $this->getInheritanceCombined( $_aPHPFiles );
-
-            $_sHeaderComment = $this->getHeaderComment( $_aPHPFiles );
-
-            $this->tryIncludingDependencies();
-
-            $_aPHPFiles = $this->getPHPFilesBeautified( $_aPHPFiles, $_sHeaderComment );
-
-            $_aPHPFiles = $this->getInlineCSSAndJSMinified( $_aPHPFiles );
+            $_oCodeFormatter = new Delegation\CodeFormatter( $this, $_sTempDirPath, $_aPHPFiles, $_aAdditionalFiles );
+            $_aPHPFiles      = $_oCodeFormatter->get();
 
             $_oFileGenerator = new Delegation\FileGenerator( $this, $_sTempDirPath, $_aPHPFiles, $_aAdditionalFiles );
             $_oFileGenerator->tryDoing();
@@ -184,49 +177,6 @@ class Compiler implements InterfaceCompiler {
     }
 
     /**
-     * @param  array $aPHPFiles
-     * @return array
-     * @since  1.0.0
-     */
-    public function getInheritanceCombined( array $aPHPFiles ) {
-        if ( empty( $this->aArguments[ 'combine' ][ 'inheritance' ] ) ) {
-            return $aPHPFiles;
-        }
-        $_oCombiner = new InheritanceCombiner( $aPHPFiles, $this->aArguments[ 'combine' ] );
-        return $_oCombiner->get();
-    }
-
-    /**
-     * @param  array $aPHPFiles
-     * @return array
-     * @since  1.0.0
-     */
-    public function getInlineCSSAndJSMinified( array $aPHPFiles ) {
-        $this->output( 'Minifying Inline CSS and JavaScript...' );
-        $this->output( 'CSS Here-doc Keys: ' . implode( ',', $this->aArguments[ 'css_heredoc_keys' ] ) );
-        $this->output( 'JS Here-doc Keys: ' . implode( ',', $this->aArguments[ 'js_heredoc_keys' ] ) );
-        $_oInlineCSSMinifier = new Minifier\InlineCSSMinifier( $this->aArguments[ 'css_heredoc_keys' ] );
-        $_oInlineJSMinifier  = new Minifier\InlineJSMinifier( $this->aArguments[ 'js_heredoc_keys' ] );
-        $_iProcessed = 0;
-        foreach( $aPHPFiles as $_sBaseName => $_aFile ) {
-            $_sPHPCode = $_aFile[ 'code' ];
-            $_sPHPCode = $_oInlineCSSMinifier->get( $_sPHPCode );
-            $_sPHPCode = $_oInlineJSMinifier->get( $_sPHPCode );
-            if ( $_sPHPCode !== $_aFile[ 'code' ] ) {   // means minified
-                $this->output( '.', false );
-                $_iProcessed++;
-            }
-            $_aFile[ 'code' ] = $_sPHPCode;
-            $aPHPFiles[ $_sBaseName ] = $_aFile;
-        }
-        if ( $_iProcessed ) {
-            $this->output( '' );    // echo carriage return
-            $this->output( sprintf( 'Here-doc resources of %1$s files code were minified.', $_iProcessed ) );
-        }
-        return $aPHPFiles;
-    }
-
-    /**
      * @throws Exception
      * @since  1.0.0
      * @deprecated No longer used. This was used to download and install PHP Beautifier.
@@ -241,82 +191,6 @@ class Compiler implements InterfaceCompiler {
                 : 'Failed to include the dependency: ' . $_aLibrary[ 'name' ];
             $this->output( $_sMessage );
         }
-    }
-
-    /**
-     * @param  array  $aPHPFiles
-     * @param  string $sHeaderComment
-     * @return array
-     * @since  1.0.0
-     */
-    public function getPHPFilesBeautified( array $aPHPFiles, $sHeaderComment ) {
-        $sHeaderComment = false !== strpos( $sHeaderComment, '/*' )
-            ? HeaderGenerator::getMultiLineCommentUnwrapped( $sHeaderComment )
-            : $sHeaderComment;
-        $this->output( 'Beautifying PHP code.' );
-        $_aNew = array();
-        foreach( $aPHPFiles as $_sFileBasename => $_aFile  ) {
-            $_aFile[ 'code' ] = $this->getCodeBeautified( $_aFile[ 'code' ], $sHeaderComment );
-            $_aNew[ $_sFileBasename ] = $_aFile;
-            $this->output( '.', false );
-        }
-        $this->output( $this->aArguments[ 'carriage_return' ] );
-        return $_aNew;
-    }
-
-    /**
-     * @param  string $sCode          PHP code without the beginning <? php.
-     * @param  string $sHeaderComment
-     * @return string
-     * @since  1.0.0
-     */
-    public function getCodeBeautified( $sCode, $sHeaderComment='' ) {
-
-        try {
-            $_oFormatter = new VariableCodeProcessor( empty( $this->aArguments[ 'php_cs_fixer' ][ 'config' ] ) ? null : $this->aArguments[ 'php_cs_fixer' ][ 'config' ] );
-            $_oFormatter->addRules([
-                'header_comment' => [
-                    'header'        => $sHeaderComment,
-                    'comment_type'  => 'comment', // 'PHPDoc',
-                    'location'      => 'after_open',
-                    'separate'      => 'bottom'
-                ],
-            ]);
-            if ( ! empty( $this->aArguments[ 'php_cs_fixer' ][ 'rules' ] ) && is_array( $this->aArguments[ 'php_cs_fixer' ][ 'rules' ] ) ) {
-                $_oFormatter->addRules( $this->aArguments[ 'php_cs_fixer' ][ 'rules' ] );
-            }
-            $sCode = '<?php ' . trim( $sCode );
-            $sCode = $_oFormatter->get( $sCode );
-        }
-        catch ( Exception $_oException ) {
-            $this->output( $_oException->getCode() . ': ' . $_oException->getMessage() );
-            return '';
-        }
-
-        // Somehow the ending enclosing braces gets 4-spaced indents. So fix them.
-        return preg_replace( '/[\r\n]\K\s{4}}$/', '}', $sCode );
-
-    }
-
-    /**
-     * @return string
-     * @since  1.0.0
-     */
-    public function getHeaderComment( array $aPHPFiles ) {
-
-        $_sHeaderComment = '';
-        try {
-            $_oHeader        = new HeaderGenerator( $aPHPFiles, $this->aArguments[ 'comment_header' ] );
-            $_sHeaderComment = $_oHeader->get();
-            if ( $_sHeaderComment ) {
-                $this->output( 'File Header:' );
-                $this->output( $_sHeaderComment );
-            }
-        } catch ( \ReflectionException $_oReflectionException ) {
-            $this->output( $_oReflectionException->getCode() . ': ' . $_oReflectionException->getMessage() );
-        }
-        return trim( $_sHeaderComment );
-
     }
 
     /**
