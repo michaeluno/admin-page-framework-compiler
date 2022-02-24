@@ -51,6 +51,9 @@ The options array takes the following arguments.
          const CONTRIBUTORS  = '';
       }
   ```
+  - `php_cs_fixer` : (array, optional)  PHP CS Fixer options. 
+    - `config`: (string, object) The config object or the config file path.
+    - `rules`: (array) An array holding custom rules.
   
 ## Example
 ```php

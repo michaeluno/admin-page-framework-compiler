@@ -6,7 +6,7 @@
  *
  * @copyright 2022- (c) Michael Uno <https://github.com/michaeluno/admin-page-framework-compiler>
  * @license   MIT
- * @version   1.0.1
+ * @version   1.1.0b01
  */
 namespace AdminPageFrameworkCompiler;
 
@@ -98,6 +98,14 @@ class Compiler implements InterfaceCompiler {
             'exclude_classes'   => [],
         ],
 
+        /**
+         * PHP CS Fixer options.
+         * This compiler uses PHP CS Fixer so adding/setting custom rules is possible with this argument.
+         */
+        'php_cs_fixer' => [
+            'config'    => '',  // configuration file path or an config object
+            'rules'     => [],  // array of rules
+        ],
     ];
 
     /**
@@ -317,7 +325,7 @@ class Compiler implements InterfaceCompiler {
     public function getCodeBeautified( $sCode, $sHeaderComment='' ) {
 
         try {
-            $_oFormatter = new VariableCodeProcessor();
+            $_oFormatter = new VariableCodeProcessor( empty( $this->aArguments[ 'php_cs_fixer' ][ 'config' ] ) ? null : $this->aArguments[ 'php_cs_fixer' ][ 'config' ] );
             $_oFormatter->addRules([
                 'header_comment' => [
                     'header'        => $sHeaderComment,
@@ -326,6 +334,9 @@ class Compiler implements InterfaceCompiler {
                     'separate'      => 'bottom'
                 ],
             ]);
+            if ( ! empty( $this->aArguments[ 'php_cs_fixer' ][ 'rules' ] ) && is_array( $this->aArguments[ 'php_cs_fixer' ][ 'rules' ] ) ) {
+                $_oFormatter->addRules( $this->aArguments[ 'php_cs_fixer' ][ 'rules' ] );
+            }
             $sCode = '<?php ' . trim( $sCode );
             $sCode = $_oFormatter->get( $sCode );
         }
