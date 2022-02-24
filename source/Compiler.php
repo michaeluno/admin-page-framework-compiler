@@ -154,7 +154,8 @@ class Compiler implements InterfaceCompiler {
             $this->tryCopyingFilesToTemporaryDirectory( $_sTempDirPath );
 
             $_aPHPFiles = $_aAdditionalFiles = [];
-            $this->tryListingFiles( $_sTempDirPath, $_aPHPFiles, $_aAdditionalFiles );
+            $_oFileList = new Delegation\FileList( $this, $_sTempDirPath, $_aPHPFiles, $_aAdditionalFiles );
+            $_oFileList->tryDoing();
 
             $_aPHPFiles = $this->getInheritanceCombined( $_aPHPFiles );
 
@@ -371,79 +372,7 @@ class Compiler implements InterfaceCompiler {
 
     }
 
-    /**
-     * @param  string    $sTempDirPath
-     * @throws Exception
-     * @since  1.0.0
-     */
-    public function tryListingFiles( $sTempDirPath, array &$aPHPFiles, array &$aAdditionalFiles ) {
 
-        $this->output( 'Searching files under the directory: ' . $this->sSourceDirPath );
-
-        /**
-         * @var array associative array consisting of class name keys with sub elements.
-         * ```
-         * [
-         *  [AdminPageFramework_Form_View___FieldsetRow] => Array (
-         *       [path] => .../factory/_common/form/_view/sectionset/AdminPageFramework_Form_View___FieldsetRow.php
-         *       [code] => class AdminPageFramework_Form_View___FieldsetRow extends AdminPageFramework_Form_View___FieldsetTableRow { ...
-         *       [dependency] => AdminPageFramework_Form_View___FieldsetTableRow
-         *       [classes] => Array(
-         *          [0] => AdminPageFramework_Form_View___FieldsetRow
-         *       )
-         *       [interfaces] => Array()
-         *       [traits] => Array()
-         *       [namespaces] => Array()
-         *       [aliases] => Array()
-         *  // continues
-         * ]
-         * ```
-         */
-        $aPHPFiles = $this->___getFileList( $sTempDirPath, $this->aArguments[ 'search' ], 'CLASS' );
-        $this->output( sprintf( 'Found %1$s file(s).', count( $aPHPFiles ) ) );
-
-        /**
-         * Structure
-         * @var array numerically indexed linear array holding found file paths.
-         * [
-         *      [0] => .../factory/_common/form/_view/sectionset/AdminPageFramework_Form_View___FieldsetRow.php
-         *      [1] => .../factory/_common/form/_view/sectionset/AdminPageFramework_Form_View___FieldsetRow2.php
-         *      // continues...
-         * ]
-         */
-        if ( ! empty( $this->aArguments[ 'include' ][ 'allowed_extensions' ] ) ) {
-            $aAdditionalFiles = $this->___getFileList( $sTempDirPath, $this->aArguments[ 'include' ], 'PATH' );
-            $this->output( sprintf( 'Found %1$s additional file(s).', count( $aAdditionalFiles ) ) );
-        }
-
-        if ( empty( $aPHPFiles ) && empty( $aAdditionalFiles ) ) {
-            throw new Exception( 'Could not find files.' );
-        }
-
-    }
-        /**
-         * @param  string $sTempDirPath
-         * @param  array  $aSearchOptions
-         * @param  string $sStructureType
-         * @return array
-         * @since  1.0.0
-         */
-        private function ___getFileList( $sTempDirPath, array $aSearchOptions, $sStructureType='CLASS' ) {
-            $_oGenerator = new PHPClassMapGenerator(
-                $sTempDirPath,  // doesn't matter
-                [ $sTempDirPath ],
-                '',
-                array(
-                    'do_in_constructor'  => false,
-                    'output_buffer'      => false,
-                    'structure'          => $sStructureType,    // PATH (linear array holding found file path) or CLASS (consists of keys of class names and sub-elements as a value)
-                    'search'             => $aSearchOptions,
-                )
-            );
-            return 'PATH' === $sStructureType
-                ? $_oGenerator->get()
-                : $_oGenerator->getItems();
-        }
 
     /**
      * @param  string $sTempDirPath
