@@ -1,6 +1,6 @@
 # Change Log
 
-## 1.1.0 
+## 1.1.0 - 2022/02/26
 - Added the support for nowdoc resource code minification.
 - Added the `code_formatters` argument that allows custom PHP code formatting. 
 - Added the `php_cs_fixer` argument that allows custom configurations.
