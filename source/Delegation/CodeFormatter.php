@@ -109,6 +109,7 @@ class CodeFormatter extends AbstractDelegation {
                 'AdminPageFrameworkCompiler\CodeFormatter\SingleLineClassDeclaration',
                 'AdminPageFrameworkCompiler\CodeFormatter\SingleLineEndIf',
                 'AdminPageFrameworkCompiler\CodeFormatter\EmptyMethods',
+                'AdminPageFrameworkCompiler\CodeFormatter\SingleLineOpeningCurlyBrackets',
             ];
             $_aClasses   = array_unique( array_merge( $this->oCompiler->aArguments[ 'code_formatters' ], $_aClasses ) );
             foreach( $_aClasses as $_sClassNameOrInstance ) {
