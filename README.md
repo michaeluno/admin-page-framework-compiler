@@ -54,7 +54,8 @@ The options array takes the following arguments.
   - `php_cs_fixer` : (array, optional)  PHP CS Fixer options. 
     - `config`: (string, object) The config object or the config file path.
     - `rules`: (array) An array holding custom rules.
-  
+  - `code_formatters` : (array, optional) an array holding class names or object instances of those classes that extend the `AbstractCodeFormatter` class and perform formatting of code. When an item is added, the `get()` will be called to retrieve the filtered PHP code. The PHP code is passed per-file basis. 
+   
 ## Example
 ```php
 $oCompiler = new \AdminPageFrameworkCompiler\Compiler(

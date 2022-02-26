@@ -106,6 +106,12 @@ class Compiler implements InterfaceCompiler {
             'config'    => '',  // configuration file path or an config object
             'rules'     => [],  // array of rules
         ],
+
+        /**
+         * Class names with name spaces or instances of those classes that extends the `AbstractCodeFormatter` class.
+         */
+        'code_formatters' => [],
+
     ];
 
     /**

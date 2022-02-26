@@ -2,8 +2,9 @@
 
 namespace AdminPageFrameworkCompiler\Delegation;
 
+use AdminPageFrameworkCompiler\CodeFormatter\AbstractCodeFormatter;
+use AdminPageFrameworkCompiler\CodeFormatter\PHPCSFixer;
 use AdminPageFrameworkCompiler\Compiler;
-use AdminPageFrameworkCompiler\FixerHelper\VariableCodeProcessor;
 use AdminPageFrameworkCompiler\InheritanceCombiner;
 use AdminPageFrameworkCompiler\TraitFileSystemUtility;
 use AdminPageFrameworkCompiler\Minifier\InlineCSSMinifier;
@@ -102,20 +103,22 @@ class CodeFormatter extends AbstractDelegation {
     public function getCodeBeautified( $sCode, $sHeaderComment='' ) {
 
         try {
-            $_oFormatter = new VariableCodeProcessor( empty( $this->oCompiler->aArguments[ 'php_cs_fixer' ][ 'config' ] ) ? null : $this->oCompiler->aArguments[ 'php_cs_fixer' ][ 'config' ] );
-            $_oFormatter->addRules([
-                'header_comment' => [
-                    'header'        => $sHeaderComment,
-                    'comment_type'  => 'comment', // 'PHPDoc',
-                    'location'      => 'after_open',
-                    'separate'      => 'bottom'
-                ],
-            ]);
-            if ( ! empty( $this->oCompiler->aArguments[ 'php_cs_fixer' ][ 'rules' ] ) && is_array( $this->oCompiler->aArguments[ 'php_cs_fixer' ][ 'rules' ] ) ) {
-                $_oFormatter->addRules( $this->oCompiler->aArguments[ 'php_cs_fixer' ][ 'rules' ] );
+            $_oFormatter = new PHPCSFixer( $this->oCompiler->aArguments, $sHeaderComment );
+            $sCode       = $_oFormatter->get( $sCode );
+            $_aClasses   = [
+                'AdminPageFrameworkCompiler\CodeFormatter\SingleLineClassDeclaration',
+            ];
+            $_aClasses   = array_unique( array_merge( $this->oCompiler->aArguments[ 'code_formatters' ], $_aClasses ) );
+            foreach( $_aClasses as $_sClassNameOrInstance ) {
+                if ( is_string( $_sClassNameOrInstance ) ) {
+                    $_oFormatter = new $_sClassNameOrInstance( $this->oCompiler->aArguments );
+                    $sCode       = $_oFormatter->get( $sCode );
+                }
+                if ( $_sClassNameOrInstance instanceof AbstractCodeFormatter ) {
+                    $_sClassNameOrInstance->setArguments( $this->oCompiler->aArguments );
+                    $sCode       = $_sClassNameOrInstance->get( $sCode );
+                }
             }
-            $sCode = '<?php ' . trim( $sCode );
-            $sCode = $_oFormatter->get( $sCode );
         }
         catch ( Exception $_oException ) {
             $this->oCompiler->output( $_oException->getCode() . ': ' . $_oException->getMessage() );

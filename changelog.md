@@ -1,7 +1,8 @@
 # Change Log
 
 ## 1.1.0 
-- Add the `php_cs_fixer` argument that allows custom configurations.
+- Added the `code_formatters` argument that allows custom PHP code formatting. 
+- Added the `php_cs_fixer` argument that allows custom configurations.
 
 ## 1.0.1  - 2022/02/23
 - Fixed a bug that here-doc minification caused errors when there are double colons inside. 
