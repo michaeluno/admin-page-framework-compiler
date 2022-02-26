@@ -6,7 +6,7 @@
  *
  * @copyright 2022- (c) Michael Uno <https://github.com/michaeluno/admin-page-framework-compiler>
  * @license   MIT
- * @version   1.1.0b02
+ * @version   1.1.0b03
  */
 namespace AdminPageFrameworkCompiler;
 
