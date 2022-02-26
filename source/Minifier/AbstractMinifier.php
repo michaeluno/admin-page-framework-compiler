@@ -5,6 +5,21 @@ namespace AdminPageFrameworkCompiler\Minifier;
 abstract class AbstractMinifier {
 
     /**
+     * The heredoc or nowdoc keywords.
+     *
+     * ```
+     * <<<EOL
+     * Some text
+     * Another line.
+     * EOL;
+     *
+     * <<<`TEXT`
+     * Some text
+     * Another line.
+     * TEXT;
+     * ```
+     * In the above code, `EOL` is the heredoc keyword and `TEXT` is the nowdoc keyword.
+     *
      * @var array
      */
     public $aHereDocKeys = [];
@@ -26,12 +41,16 @@ abstract class AbstractMinifier {
             if ( ! strlen( $_sHereDocKey ) ) {
                 continue;
             }
-            $sPHPCode = preg_replace_callback(
-                "/\s?+\K(<<<{$_sHereDocKey}[\r\n])(.+?)([\r\n]{$_sHereDocKey};(\s+)?[\r\n])/ms",   // needle
-                array( $this, '___replyToGetMinified' ),  // callback
-                $sPHPCode,                                // haystack
-                -1  // limit -1 for no limit
-            );
+            $_sPattern = "/"    // delimiter
+                . "\s?+\K"
+                . "(<<<(\Q{$_sHereDocKey}\E|\Q'{$_sHereDocKey}'\E)[\r\n])"  // $1, $2
+                . "(.+?)"       // Here/now doc content     // $3
+                . "(" // $4
+                    . "[\r\n]{$_sHereDocKey};"
+                    . "(\s+)?[\r\n]"    // $5
+                . ")"
+                . "/ms";    // delimiter and regex modifieres
+            $sPHPCode = preg_replace_callback( $_sPattern, array( $this, '___replyToGetMinified' ), $sPHPCode, -1 );
         }
         return $sPHPCode;
     }
@@ -44,11 +63,11 @@ abstract class AbstractMinifier {
      * @return   string
      */
     private function ___replyToGetMinified( $aMatch ) {
-        if ( ! isset( $aMatch[ 1 ], $aMatch[ 2 ], $aMatch[ 3 ] ) ) {
+        if ( ! isset( $aMatch[ 2 ], $aMatch[ 3 ], $aMatch[ 4 ] ) ) {
             return $aMatch[ 0 ];
         }
-        $_sCode = $aMatch[ 2 ];
-        return $aMatch[ 1 ] . $this->getMinified( $_sCode ) . $aMatch[ 3 ];
+        $_sCode = $aMatch[ 3 ];
+        return $aMatch[ 1 ] . $this->getMinified( $_sCode ) . $aMatch[ 4 ];
     }
 
     /**

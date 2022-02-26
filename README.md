@@ -19,8 +19,8 @@ $oCompiler->run();
 The options array takes the following arguments.
 - `output_buffer`       : (boolean) whether output buffer should be printed. 
 - `exclude_classes`     : (array)        an array holding class names to exclude.
-- `css_heredoc_keys`    : (array, optional) an array holding heredoc keywords used to assign CSS rules to a variable.
-- `js_heredoc_keys`     : (array, optional) an array holding heredoc keywords used to assign JavaScript scripts to a variable.
+- `css_heredoc_keys`    : (array, optional) an array holding heredoc/nowdoc keywords used to assign CSS rules to a variable. For nowdoc keywords, omit enclosing single quotes.
+- `js_heredoc_keys`     : (array, optional) an array holding heredoc/nowdoc keywords used to assign JavaScript scripts to a variable. For nowdoc keywords, omit enclosing single quotes.
 - `combine` : (array, optional) Combine option
   - `inheritance` : (boolean) Whether to combine files in the same directory with hierarchical relationships.
   - `exclude_classes` : (string|array, optional)  Class names to exclude from combining.
