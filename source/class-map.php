@@ -6,7 +6,7 @@
  *
  * @copyright 2022- (c) Michael Uno <https://github.com/michaeluno/admin-page-framework-compiler>
  * @license   MIT
- * @version   1.1.0b01
+ * @version   1.1.0b04
  */
 return array(
     "AdminPageFrameworkCompiler\\Compiler" => __DIR__ . "/Compiler.php", 
@@ -17,6 +17,7 @@ return array(
     "AdminPageFrameworkCompiler\\TraitFileSystemUtility" => __DIR__ . "/TraitFileSystemUtility.php", 
     "AdminPageFrameworkCompiler\\TraitLog" => __DIR__ . "/TraitLog.php", 
     "AdminPageFrameworkCompiler\\CodeFormatter\\AbstractCodeFormatter" => __DIR__ . "/CodeFormatter/AbstractCodeFormatter.php", 
+    "AdminPageFrameworkCompiler\\CodeFormatter\\EmptyMethods" => __DIR__ . "/CodeFormatter/EmptyMethods.php", 
     "AdminPageFrameworkCompiler\\CodeFormatter\\PHPCSFixer" => __DIR__ . "/CodeFormatter/PHPCSFixer.php", 
     "AdminPageFrameworkCompiler\\CodeFormatter\\SingleLineClassDeclaration" => __DIR__ . "/CodeFormatter/SingleLineClassDeclaration.php", 
     "AdminPageFrameworkCompiler\\CodeFormatter\\SingleLineEndIf" => __DIR__ . "/CodeFormatter/SingleLineEndIf.php", 
