@@ -44,6 +44,10 @@ class VariableCodeProcessor {
         return $this->get( file_get_contents( $phpFilePath ) );
     }
 
+    /**
+     * @param  string $sCodeToFix
+     * @return string
+     */
     public function get( $sCodeToFix ) {
         $sPathVirtual = $this->sScheme . '://' . uniqid() . '.virtual.php'; // .virtual.php is checked with VariableStream
         file_put_contents( $sPathVirtual, $sCodeToFix );
@@ -77,7 +81,7 @@ class VariableCodeProcessor {
         $_oRunner->fix();
         $_sFixedCode = file_get_contents( $sPathVirtual );
         unlink( $sPathVirtual );
-        return $_sFixedCode;
+        return strlen( $_sFixedCode ) ? $_sFixedCode : '';
 
     }
 
