@@ -19,6 +19,7 @@ return array(
     "AdminPageFrameworkCompiler\\CodeFormatter\\AbstractCodeFormatter" => __DIR__ . "/CodeFormatter/AbstractCodeFormatter.php", 
     "AdminPageFrameworkCompiler\\CodeFormatter\\PHPCSFixer" => __DIR__ . "/CodeFormatter/PHPCSFixer.php", 
     "AdminPageFrameworkCompiler\\CodeFormatter\\SingleLineClassDeclaration" => __DIR__ . "/CodeFormatter/SingleLineClassDeclaration.php", 
+    "AdminPageFrameworkCompiler\\CodeFormatter\\SingleLineEndIf" => __DIR__ . "/CodeFormatter/SingleLineEndIf.php", 
     "AdminPageFrameworkCompiler\\Delegation\\AbstractDelegation" => __DIR__ . "/Delegation/AbstractDelegation.php", 
     "AdminPageFrameworkCompiler\\Delegation\\CodeFormatter" => __DIR__ . "/Delegation/CodeFormatter.php", 
     "AdminPageFrameworkCompiler\\Delegation\\FileGenerator" => __DIR__ . "/Delegation/FileGenerator.php", 
