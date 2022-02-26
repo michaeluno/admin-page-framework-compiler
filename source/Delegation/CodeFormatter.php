@@ -122,8 +122,11 @@ class CodeFormatter extends AbstractDelegation {
             return '';
         }
 
+        return $sCode;
+        
+        // @deprecated 1.1.0    No longer needed as PHP Beautifier is not used any more.
         // Somehow the ending enclosing braces gets 4-spaced indents. So fix them.
-        return preg_replace( '/[\r\n]\K\s{4}}$/', '}', $sCode );
+        // return preg_replace( '/[\r\n]\K\s{4}}$/', '}', $sCode );
 
     }
     
