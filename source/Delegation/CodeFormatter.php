@@ -83,9 +83,9 @@ class CodeFormatter extends AbstractDelegation {
             $_aExcludeClassesCombine = empty( $_aArguments[ 'exclude_classes' ] ) || ! is_array( $_aArguments[ 'exclude_classes' ] )
                 ? []
                 : $_aArguments[ 'exclude_classes' ];
-            $_aExcludeClasses        = empty( $this->oCompiler->aArguments[ 'exclude_classes' ] ) || ! is_array( $this->oCompiler->aArguments[ 'exclude_classes' ] )
+            $_aExcludeClasses        = empty( $this->oCompiler->aArguments[ 'excludes' ][ 'classes' ] ) || ! is_array( $this->oCompiler->aArguments[ 'excludes' ][ 'classes' ] )
                 ? []
-                : $this->oCompiler->aArguments[ 'exclude_classes' ];
+                : $this->oCompiler->aArguments[ 'excludes' ][ 'classes' ];
             $_aArguments[ 'exclude_classes' ] = array_unique( array_merge( $_aExcludeClassesCombine, $_aExcludeClasses ) );
             return $_aArguments;
         }
@@ -102,14 +102,56 @@ class CodeFormatter extends AbstractDelegation {
             : $sHeaderComment;
         $this->oCompiler->output( 'Beautifying PHP code.' );
         $_aNew = array();
-        foreach( $aPHPFiles as $_sFileBasename => $_aFile  ) {
-            $_aFile[ 'code' ] = $this->getCodeBeautified( $_aFile[ 'code' ], $sHeaderComment );
-            $_aNew[ $_sFileBasename ] = $_aFile;
+        /**
+         * @var array $_aFile
+         * ### Structure
+         * ```
+         * [
+         *   'path'         => '...InlineJSMinifier.php',
+         *   'dependency'   => 'AbstractMinifier',
+         *   'classes'      => [
+         *      0 => 'AdminPageFrameworkCompiler\Minifier\InlineJSMinifier'
+         *   ],
+         *   'interfaces'   => [],
+         *   'traits'       => [],
+         *   'namespaces'   => [
+         *      0 => 'AdminPageFrameworkCompiler\Minifier\',
+         *   ],
+         *   'aliases'      => [],
+         * ]
+         * ```
+         */
+        foreach( $aPHPFiles as $_sFileBasenameWOExt => $_aFile  ) {
+            $_aFile[ 'code' ] = $this->___isExcluded( $_sFileBasenameWOExt, $_aFile )
+                ? file_get_contents( $_aFile[ 'path' ] )
+                : $this->getCodeBeautified( $_aFile[ 'code' ], $sHeaderComment );
+            $_aNew[ $_sFileBasenameWOExt ] = $_aFile;
             $this->oCompiler->output( '.', false );
         }
         $this->oCompiler->output( $this->oCompiler->aArguments[ 'carriage_return' ] );
         return $_aNew;
     }
+        /**
+         * @since  1.2.0
+         * @param  string   $sFileBaseName
+         * @param  array    $aFile
+         * @return boolean
+         */
+        private function ___isExcluded( $sFileBaseName, array $aFile ) {
+            if ( in_array( $aFile[ 'path' ], ( array ) $this->oCompiler->aArguments[ 'excludes' ][ 'paths' ] ) ) {
+                return true;
+            }
+            $_sFileBaseName = basename( $aFile[ 'path' ] ); // with its file extension
+            if ( in_array( $_sFileBaseName, ( array ) $this->oCompiler->aArguments[ 'excludes' ][ 'file_names' ], true ) ) {
+                return true;
+            }
+            foreach( $aFile[ 'classes' ] as $_sClassName ) {
+                if ( in_array( $_sClassName, ( array ) $this->oCompiler->aArguments[ 'excludes' ][ 'classes' ], true ) ) {
+                    return true;
+                }
+            }
+            return false;
+        }
     
     /**
      * @param  string $sCode          PHP code without the beginning <? php.

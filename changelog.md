@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.2.0 -
+- Added the `exclude` argument that excludes certain items from compiling while including those files.
+
 ## 1.1.0 - 2022/02/26
 - Added the support for nowdoc resource code minification.
 - Added the `code_formatters` argument that allows custom PHP code formatting. 

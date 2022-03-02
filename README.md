@@ -21,6 +21,10 @@ The options array takes the following arguments.
 - `exclude_classes`     : (array)        an array holding class names to exclude.
 - `css_heredoc_keys`    : (array, optional) an array holding heredoc/nowdoc keywords used to assign CSS rules to a variable. For nowdoc keywords, omit enclosing single quotes.
 - `js_heredoc_keys`     : (array, optional) an array holding heredoc/nowdoc keywords used to assign JavaScript scripts to a variable. For nowdoc keywords, omit enclosing single quotes.
+- `excludes`            : (array, optional) an array storing information of items not to compile. Those items will be added but not formatted. 
+  - `classes`    : (array) Class names to exclude from compiling.
+  - `paths`      : (array) File paths to exclude from compiling.
+  - `file_names` : (array) File names with a file extension to exclude from compiling.
 - `combine` : (array, optional) Combine option
   - `inheritance` : (boolean) Whether to combine files in the same directory with hierarchical relationships.
   - `exclude_classes` : (string|array, optional)  Class names to exclude from combining.

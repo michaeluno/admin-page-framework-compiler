@@ -50,7 +50,12 @@ class Compiler implements InterfaceCompiler {
 
         // 'character_encode'  => 'UTF-8',  // unused at the moment
 
-        'exclude_classes'   => [],
+        // 1.2.0 Excludes certain items from compiling while including those items.
+        'excludes'          => [
+            'classes'    => [],
+            'paths'      => [],
+            'file_names' => [],
+        ],
         'css_heredoc_keys'  => [],
         'js_heredoc_keys'   => [],
 
