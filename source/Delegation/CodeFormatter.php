@@ -69,9 +69,26 @@ class CodeFormatter extends AbstractDelegation {
         if ( empty( $this->oCompiler->aArguments[ 'combine' ][ 'inheritance' ] ) ) {
             return $aPHPFiles;
         }
-        $_oCombiner = new InheritanceCombiner( $aPHPFiles, $this->oCompiler->aArguments[ 'combine' ] );
+        $_oCombiner = new InheritanceCombiner( $aPHPFiles, $this->___getCombineArguments() );
         return $_oCombiner->get();
     }
+        /**
+         * @return array
+         * @since  1.1.1
+         */
+        private function ___getCombineArguments() {
+            $_aArguments             = empty( $this->oCompiler->aArguments[ 'combine' ] ) || ! is_array( $this->oCompiler->aArguments[ 'combine' ] )
+                ? [  'exclude_classes' => [] ]
+                : $this->oCompiler->aArguments[ 'combine' ];
+            $_aExcludeClassesCombine = empty( $_aArguments[ 'exclude_classes' ] ) || ! is_array( $_aArguments[ 'exclude_classes' ] )
+                ? []
+                : $_aArguments[ 'exclude_classes' ];
+            $_aExcludeClasses        = empty( $this->oCompiler->aArguments[ 'exclude_classes' ] ) || ! is_array( $this->oCompiler->aArguments[ 'exclude_classes' ] )
+                ? []
+                : $this->oCompiler->aArguments[ 'exclude_classes' ];
+            $_aArguments[ 'exclude_classes' ] = array_unique( array_merge( $_aExcludeClassesCombine, $_aExcludeClasses ) );
+            return $_aArguments;
+        }
 
     /**
      * @param  array  $aPHPFiles
