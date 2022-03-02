@@ -1,6 +1,6 @@
 # Change Log
 
-## 1.2.0 -
+## 1.2.0 - 2022/03/02
 - Added the `exclude` argument that excludes certain items from compiling while including those files.
 
 ## 1.1.0 - 2022/02/26
